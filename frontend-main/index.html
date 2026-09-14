@@ -12,13 +12,11 @@
   :root {
     --black: #000000;
     --black-soft: #0a0a0a;
-    --black-card: #0f0f0f;
     --white: #ffffff;
     --white-dim: #b8b8b8;
     --white-mute: #6b6b6b;
     --gold: #D4AF37;
     --gold-light: #F4D77E;
-    --gold-dim: rgba(212,175,55,0.15);
     --border: rgba(255,255,255,0.08);
     --border-gold: rgba(212,175,55,0.25);
     --green: #10B981;
@@ -36,15 +34,32 @@
   h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.15; }
   a { text-decoration: none; color: inherit; }
 
-  /* ---------- STARFIELD ---------- */
+  /* ---------- BACKGROUND: STARS + ORBS ---------- */
   #starfield {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 0; pointer-events: none;
   }
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    animation: orbFloat 20s ease-in-out infinite;
+  }
+  .orb-1 { width: 500px; height: 500px; background: rgba(212,175,55,0.25); top: -100px; left: -100px; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(212,175,55,0.15); bottom: 10%; right: -100px; animation-delay: -7s; }
+  .orb-3 { width: 350px; height: 350px; background: rgba(16,185,129,0.08); top: 40%; left: 40%; animation-delay: -14s; }
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(60px, -40px) scale(1.1); }
+    66% { transform: translate(-40px, 60px) scale(0.95); }
+  }
   .content-wrap { position: relative; z-index: 1; }
 
-  /* ---------- LIVE TICKER ---------- */
+  /* ---------- TICKER ---------- */
   .ticker {
     background: #050505;
     border-bottom: 1px solid var(--border);
@@ -54,10 +69,7 @@
     position: relative;
     z-index: 1001;
   }
-  .ticker-content {
-    display: inline-block;
-    animation: tickerScroll 40s linear infinite;
-  }
+  .ticker-content { display: inline-block; animation: tickerScroll 40s linear infinite; }
   .ticker-items { display: inline-block; }
   .ticker-item {
     margin: 0 24px; font-size: 13px; font-weight: 500;
@@ -82,7 +94,6 @@
     z-index: 1000;
     background: rgba(0,0,0,0.75);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
   }
   .nav-inner {
@@ -93,25 +104,37 @@
     font-family: 'Playfair Display', serif;
     font-size: 24px; font-weight: 800;
     display: flex; align-items: center; gap: 10px;
-    letter-spacing: -0.5px;
   }
   .logo .crown { color: var(--gold); font-size: 22px; }
   .logo span.gold { color: var(--gold); }
-  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
   .nav-links a {
-    font-weight: 500; font-size: 15px;
+    font-weight: 500; font-size: 14px;
     color: var(--white-dim);
     transition: color .25s;
   }
   .nav-links a:hover { color: var(--gold); }
   .nav-cta {
-    padding: 10px 24px;
+    padding: 10px 22px;
     background: var(--gold);
     color: var(--black) !important;
     border-radius: 8px;
     font-weight: 600;
     box-shadow: 0 0 20px rgba(212,175,55,0.3);
     transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-cta::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    animation: shimmer 3s infinite;
+  }
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
   }
   .nav-cta:hover {
     transform: translateY(-1px);
@@ -122,7 +145,7 @@
 
   /* ---------- HERO ---------- */
   .hero {
-    padding: 100px 32px 120px;
+    padding: 90px 32px 120px;
     max-width: 1280px; margin: 0 auto;
     display: grid; grid-template-columns: 1.15fr 1fr;
     gap: 80px; align-items: center;
@@ -158,12 +181,20 @@
     transition: all .3s;
     cursor: pointer; border: none;
     font-family: 'Inter', sans-serif;
-    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
   }
   .btn-gold {
     background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
     color: var(--black);
     box-shadow: 0 10px 40px rgba(212,175,55,0.35);
+  }
+  .btn-gold::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: shimmer 3s infinite;
   }
   .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 15px 50px rgba(212,175,55,0.55); }
   .btn-ghost {
@@ -172,7 +203,6 @@
   }
   .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
 
-  /* Hero mini-stats */
   .hero-stats {
     display: flex; gap: 32px; flex-wrap: wrap;
     padding-top: 32px; border-top: 1px solid var(--border);
@@ -190,7 +220,8 @@
   /* Portfolio card */
   .hero-visual { position: relative; }
   .portfolio-card {
-    background: linear-gradient(160deg, #0f0f0f 0%, #050505 100%);
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 32px;
@@ -225,7 +256,7 @@
     font-size: 12px; font-weight: 600;
     display: flex; align-items: center; gap: 4px;
   }
-  .chart { height: 110px; margin-bottom: 24px; position: relative; }
+  .chart { height: 110px; margin-bottom: 24px; }
   .chart svg { width: 100%; height: 100%; overflow: visible; }
   .chart .line {
     fill: none; stroke: url(#goldGradient);
@@ -297,6 +328,116 @@
   .section-header h2 .gold { color: var(--gold); font-style: italic; }
   .section-header p { color: var(--white-dim); font-size: 17px; font-weight: 300; }
 
+  /* ---------- STOCKS SECTION (NEW) ---------- */
+  .stocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .stock-card {
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    transition: all .35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .stock-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0; transition: opacity .35s;
+  }
+  .stock-card:hover {
+    border-color: var(--border-gold);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.1);
+  }
+  .stock-card:hover::before { opacity: 1; }
+  .stock-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .stock-symbol {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+  .stock-name { font-size: 11px; color: var(--white-mute); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .stock-logo {
+    width: 36px; height: 36px;
+    background: rgba(212,175,55,0.1);
+    border: 1px solid var(--border-gold);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    font-weight: 700; font-size: 12px;
+  }
+  .stock-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; color: var(--white);
+    margin-bottom: 6px; letter-spacing: -0.5px;
+  }
+  .stock-change {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13px; font-weight: 600;
+    padding: 4px 10px; border-radius: 12px;
+  }
+  .stock-change.positive { background: rgba(16,185,129,0.12); color: var(--green); }
+  .stock-change.negative { background: rgba(239,68,68,0.12); color: var(--red); }
+  .stock-spark {
+    height: 30px; margin-top: 12px;
+  }
+  .stock-spark svg { width: 100%; height: 100%; overflow: visible; }
+  .stock-spark .spark-line {
+    fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .stock-spark.positive .spark-line { stroke: var(--green); filter: drop-shadow(0 0 4px rgba(16,185,129,0.5)); }
+  .stock-spark.negative .spark-line { stroke: var(--red); filter: drop-shadow(0 0 4px rgba(239,68,68,0.5)); }
+
+  .stocks-footer {
+    text-align: center; margin-top: 20px;
+  }
+  .stocks-footer p {
+    color: var(--white-mute); font-size: 12px; margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  /* Top Movers */
+  .movers-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    margin-top: 60px;
+  }
+  .movers-panel {
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+  }
+  .movers-panel h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .movers-panel h3.gainers { color: var(--green); }
+  .movers-panel h3.losers { color: var(--red); }
+  .mover-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .mover-row:last-child { border-bottom: none; }
+  .mover-symbol { font-weight: 700; color: var(--white); }
+  .mover-name { font-size: 12px; color: var(--white-mute); margin-left: 8px; }
+  .mover-pct { font-weight: 700; }
+
   /* ---------- ABOUT ---------- */
   .about-grid {
     display: grid; grid-template-columns: 1fr 1fr;
@@ -311,12 +452,10 @@
     color: var(--white-dim); font-size: 16px;
     line-height: 1.8; margin-bottom: 20px; font-weight: 300;
   }
-  .stats-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .stat-box {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 18px;
     padding: 28px 24px;
@@ -337,7 +476,8 @@
     gap: 24px;
   }
   .feature-card {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%);
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     padding: 40px 32px;
     border-radius: 20px;
     border: 1px solid var(--border);
@@ -363,29 +503,22 @@
   .feature-card p { color: var(--white-dim); font-size: 15px; font-weight: 300; line-height: 1.7; }
 
   /* ---------- HOW IT WORKS ---------- */
-  .steps-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
   .step-card {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 36px 28px;
     transition: all .35s;
-    position: relative;
   }
   .step-card:hover { border-color: var(--border-gold); transform: translateY(-4px); }
   .step-num {
     font-family: 'Playfair Display', serif;
     font-size: 56px; color: rgba(212,175,55,0.25);
-    line-height: 1; margin-bottom: 16px;
-    font-weight: 800;
+    line-height: 1; margin-bottom: 16px; font-weight: 800;
   }
-  .step-card h3 {
-    font-size: 20px; color: var(--white);
-    margin-bottom: 12px; font-weight: 700;
-  }
+  .step-card h3 { font-size: 20px; color: var(--white); margin-bottom: 12px; font-weight: 700; }
   .step-card p { color: var(--white-dim); font-size: 14px; font-weight: 300; }
 
   /* ---------- PLANS ---------- */
@@ -395,7 +528,8 @@
     gap: 24px;
   }
   .plan {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 22px;
     padding: 36px 28px;
@@ -421,8 +555,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 14px; font-weight: 700;
     color: var(--white-dim);
-    margin-bottom: 8px;
-    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase;
   }
   .plan .price {
     font-family: 'Playfair Display', serif;
@@ -475,12 +608,10 @@
   }
 
   /* ---------- LIVE ACTIVITY ---------- */
-  .activity-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
+  .activity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .activity-panel {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 28px;
@@ -496,24 +627,18 @@
   .activity-list { display: flex; flex-direction: column; }
   .activity-item {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 14px 0; border-bottom: 1px solid var(--border);
     font-size: 14px;
   }
   .activity-item:last-child { border-bottom: none; }
-  .activity-user {
-    display: flex; align-items: center; gap: 12px;
-    color: var(--white-dim);
-  }
+  .activity-user { display: flex; align-items: center; gap: 12px; color: var(--white-dim); }
   .activity-user .avatar {
     width: 36px; height: 36px;
     background: rgba(212,175,55,0.1);
     border: 1px solid var(--border-gold);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: var(--gold);
-    font-weight: 600;
-    font-size: 13px;
+    color: var(--gold); font-weight: 600; font-size: 13px;
   }
   .activity-user strong { color: var(--white); font-weight: 600; display: block; font-size: 14px; }
   .activity-user span { color: var(--white-mute); font-size: 12px; }
@@ -527,17 +652,15 @@
     gap: 24px;
   }
   .testimonial {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 32px;
     transition: all .35s;
   }
   .testimonial:hover { border-color: var(--border-gold); }
-  .testimonial .stars {
-    color: var(--gold); font-size: 14px;
-    margin-bottom: 16px; letter-spacing: 2px;
-  }
+  .testimonial .stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
   .testimonial p {
     color: var(--white-dim); font-size: 15px;
     line-height: 1.8; margin-bottom: 24px;
@@ -545,16 +668,14 @@
   }
   .testimonial-author {
     display: flex; align-items: center; gap: 12px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
+    padding-top: 20px; border-top: 1px solid var(--border);
   }
   .testimonial-author .avatar {
     width: 44px; height: 44px;
     background: linear-gradient(135deg, var(--gold), var(--gold-light));
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: var(--black);
-    font-weight: 700; font-size: 15px;
+    color: var(--black); font-weight: 700; font-size: 15px;
   }
   .testimonial-author strong { display: block; color: var(--white); font-size: 14px; }
   .testimonial-author span { color: var(--white-mute); font-size: 12px; }
@@ -562,7 +683,8 @@
   /* ---------- FAQ ---------- */
   .faq-grid { max-width: 800px; margin: 0 auto; }
   .faq-item {
-    background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 14px;
     margin-bottom: 14px;
@@ -657,6 +779,14 @@
     50% { box-shadow: 0 8px 40px rgba(0, 136, 204, 0.9); }
   }
 
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 968px) {
     .hero { grid-template-columns: 1fr; gap: 60px; padding: 60px 24px 80px; }
@@ -664,14 +794,13 @@
     .hero-visual { display: flex; justify-content: center; }
     .portfolio-card { margin: 0; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
-    .activity-grid { grid-template-columns: 1fr; }
+    .activity-grid, .movers-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .section-header h2 { font-size: 36px; }
     .about-grid h2, .cta-section h2 { font-size: 36px; }
     .nav-links {
-      display: none;
-      position: absolute; top: 100%; left: 0; right: 0;
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
       flex-direction: column; background: rgba(0,0,0,0.98);
       padding: 24px; gap: 20px;
       border-bottom: 1px solid var(--border);
@@ -693,10 +822,13 @@
 <body>
 
 <canvas id="starfield"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
 <div class="content-wrap">
 
-  <!-- LIVE TICKER -->
+  <!-- TICKER -->
   <div class="ticker">
     <div class="ticker-content">
       <span class="ticker-label">LIVE MARKETS</span>
@@ -704,19 +836,19 @@
         <span class="ticker-item positive"><strong>BTC</strong> $68,420 <i class="fas fa-arrow-up"></i> +2.4%</span>
         <span class="ticker-item negative"><strong>ETH</strong> $3,780 <i class="fas fa-arrow-down"></i> -1.2%</span>
         <span class="ticker-item positive"><strong>SOL</strong> $142.50 <i class="fas fa-arrow-up"></i> +5.0%</span>
-        <span class="ticker-item positive"><strong>XRP</strong> $0.62 <i class="fas fa-arrow-up"></i> +0.8%</span>
-        <span class="ticker-item positive"><strong>ADA</strong> $0.48 <i class="fas fa-arrow-up"></i> +3.2%</span>
-        <span class="ticker-item negative"><strong>DOT</strong> $7.20 <i class="fas fa-arrow-down"></i> -0.5%</span>
-        <span class="ticker-item positive"><strong>DOGE</strong> $0.15 <i class="fas fa-arrow-up"></i> +1.8%</span>
+        <span class="ticker-item positive"><strong>AAPL</strong> $228.40 <i class="fas fa-arrow-up"></i> +1.8%</span>
+        <span class="ticker-item positive"><strong>NVDA</strong> $142.60 <i class="fas fa-arrow-up"></i> +3.2%</span>
+        <span class="ticker-item negative"><strong>TSLA</strong> $248.30 <i class="fas fa-arrow-down"></i> -0.8%</span>
+        <span class="ticker-item positive"><strong>MSFT</strong> $428.90 <i class="fas fa-arrow-up"></i> +1.1%</span>
         <span class="ticker-item positive"><strong>BNB</strong> $580 <i class="fas fa-arrow-up"></i> +2.1%</span>
         <!-- duplicate for seamless loop -->
         <span class="ticker-item positive"><strong>BTC</strong> $68,420 <i class="fas fa-arrow-up"></i> +2.4%</span>
         <span class="ticker-item negative"><strong>ETH</strong> $3,780 <i class="fas fa-arrow-down"></i> -1.2%</span>
         <span class="ticker-item positive"><strong>SOL</strong> $142.50 <i class="fas fa-arrow-up"></i> +5.0%</span>
-        <span class="ticker-item positive"><strong>XRP</strong> $0.62 <i class="fas fa-arrow-up"></i> +0.8%</span>
-        <span class="ticker-item positive"><strong>ADA</strong> $0.48 <i class="fas fa-arrow-up"></i> +3.2%</span>
-        <span class="ticker-item negative"><strong>DOT</strong> $7.20 <i class="fas fa-arrow-down"></i> -0.5%</span>
-        <span class="ticker-item positive"><strong>DOGE</strong> $0.15 <i class="fas fa-arrow-up"></i> +1.8%</span>
+        <span class="ticker-item positive"><strong>AAPL</strong> $228.40 <i class="fas fa-arrow-up"></i> +1.8%</span>
+        <span class="ticker-item positive"><strong>NVDA</strong> $142.60 <i class="fas fa-arrow-up"></i> +3.2%</span>
+        <span class="ticker-item negative"><strong>TSLA</strong> $248.30 <i class="fas fa-arrow-down"></i> -0.8%</span>
+        <span class="ticker-item positive"><strong>MSFT</strong> $428.90 <i class="fas fa-arrow-up"></i> +1.1%</span>
         <span class="ticker-item positive"><strong>BNB</strong> $580 <i class="fas fa-arrow-up"></i> +2.1%</span>
       </div>
     </div>
@@ -730,6 +862,7 @@
         KING<span class="gold">VEST</span>
       </a>
       <div class="nav-links" id="navLinks">
+        <a href="#markets">Markets</a>
         <a href="#about">About</a>
         <a href="#features">Features</a>
         <a href="#plans">Plans</a>
@@ -763,39 +896,26 @@
         <a href="register.html" class="btn btn-gold">
           <i class="fas fa-crown"></i> Start Your Reign
         </a>
-        <a href="#plans" class="btn btn-ghost">
-          <i class="fas fa-chart-line"></i> View Plans
+        <a href="#markets" class="btn btn-ghost">
+          <i class="fas fa-chart-line"></i> View Markets
         </a>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat">
-          <h4>$420M+</h4>
-          <p>Assets Traded</p>
-        </div>
-        <div class="hero-stat">
-          <h4>50K+</h4>
-          <p>Investors</p>
-        </div>
-        <div class="hero-stat">
-          <h4>98.7%</h4>
-          <p>Satisfaction</p>
-        </div>
+        <div class="hero-stat"><h4 data-count="420" data-suffix="M+">$0M+</h4><p>Assets Traded</p></div>
+        <div class="hero-stat"><h4 data-count="50" data-suffix="K+">0K+</h4><p>Investors</p></div>
+        <div class="hero-stat"><h4 data-count="98" data-suffix=".7%">0%</h4><p>Satisfaction</p></div>
       </div>
     </div>
 
     <div class="hero-visual">
-      <div class="floating-coin">
-        <i class="fas fa-crown"></i>
-      </div>
+      <div class="floating-coin"><i class="fas fa-crown"></i></div>
       <div class="portfolio-card">
         <div class="pc-header">
           <div>
             <div class="pc-label">Portfolio Value</div>
             <div class="pc-balance">$128,540.00</div>
           </div>
-          <div class="pc-change">
-            <i class="fas fa-arrow-up"></i> +12.4%
-          </div>
+          <div class="pc-change"><i class="fas fa-arrow-up"></i> +12.4%</div>
         </div>
         <div class="chart">
           <svg viewBox="0 0 400 110" preserveAspectRatio="none">
@@ -831,30 +951,180 @@
     </div>
   </div>
 
+  <!-- STOCKS / MARKETS (NEW) -->
+  <section class="block" id="markets">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="kicker">Live Markets</span>
+        <h2>Track <span class="gold">Stocks & Crypto</span></h2>
+        <p>Real-time prices from the world's biggest markets — all in one place.</p>
+      </div>
+
+      <div class="stocks-grid reveal">
+        <!-- AAPL -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">AAPL</div><div class="stock-name">Apple Inc.</div></div>
+            <div class="stock-logo"><i class="fab fa-apple"></i></div>
+          </div>
+          <div class="stock-price">$228.40</div>
+          <div class="stock-change positive"><i class="fas fa-arrow-up"></i> +1.84%</div>
+          <div class="stock-spark positive">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,22 L15,18 L30,20 L45,14 L60,16 L75,10 L90,8 L100,5"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- NVDA -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">NVDA</div><div class="stock-name">NVIDIA Corp.</div></div>
+            <div class="stock-logo">NV</div>
+          </div>
+          <div class="stock-price">$142.60</div>
+          <div class="stock-change positive"><i class="fas fa-arrow-up"></i> +3.21%</div>
+          <div class="stock-spark positive">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,25 L15,22 L30,24 L45,18 L60,14 L75,12 L90,8 L100,4"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- TSLA -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">TSLA</div><div class="stock-name">Tesla Inc.</div></div>
+            <div class="stock-logo">TS</div>
+          </div>
+          <div class="stock-price">$248.30</div>
+          <div class="stock-change negative"><i class="fas fa-arrow-down"></i> -0.82%</div>
+          <div class="stock-spark negative">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,8 L15,12 L30,10 L45,15 L60,14 L75,18 L90,20 L100,22"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- MSFT -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">MSFT</div><div class="stock-name">Microsoft</div></div>
+            <div class="stock-logo">MS</div>
+          </div>
+          <div class="stock-price">$428.90</div>
+          <div class="stock-change positive"><i class="fas fa-arrow-up"></i> +1.12%</div>
+          <div class="stock-spark positive">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,20 L15,18 L30,16 L45,17 L60,12 L75,10 L90,9 L100,6"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BTC -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">BTC</div><div class="stock-name">Bitcoin</div></div>
+            <div class="stock-logo"><i class="fab fa-bitcoin"></i></div>
+          </div>
+          <div class="stock-price">$68,420</div>
+          <div class="stock-change positive"><i class="fas fa-arrow-up"></i> +2.41%</div>
+          <div class="stock-spark positive">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,24 L15,20 L30,22 L45,15 L60,17 L75,12 L90,10 L100,7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ETH -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">ETH</div><div class="stock-name">Ethereum</div></div>
+            <div class="stock-logo"><i class="fab fa-ethereum"></i></div>
+          </div>
+          <div class="stock-price">$3,780</div>
+          <div class="stock-change negative"><i class="fas fa-arrow-down"></i> -1.18%</div>
+          <div class="stock-spark negative">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,10 L15,13 L30,11 L45,16 L60,18 L75,20 L90,22 L100,24"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- GOOGL -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">GOOGL</div><div class="stock-name">Alphabet</div></div>
+            <div class="stock-logo">G</div>
+          </div>
+          <div class="stock-price">$178.20</div>
+          <div class="stock-change positive"><i class="fas fa-arrow-up"></i> +0.94%</div>
+          <div class="stock-spark positive">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,22 L15,20 L30,18 L45,20 L60,15 L75,13 L90,11 L100,9"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- AMZN -->
+        <div class="stock-card">
+          <div class="stock-top">
+            <div><div class="stock-symbol">AMZN</div><div class="stock-name">Amazon</div></div>
+            <div class="stock-logo">AZ</div>
+          </div>
+          <div class="stock-price">$186.40</div>
+          <div class="stock-change positive"><i class="fas fa-arrow-up"></i> +2.15%</div>
+          <div class="stock-spark positive">
+            <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path class="spark-line" d="M0,23 L15,20 L30,21 L45,16 L60,14 L75,15 L90,10 L100,8"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Movers -->
+      <div class="movers-grid reveal">
+        <div class="movers-panel">
+          <h3 class="gainers"><i class="fas fa-arrow-trend-up"></i> Top Gainers</h3>
+          <div class="mover-row"><span><span class="mover-symbol">NVDA</span><span class="mover-name">NVIDIA</span></span><span class="mover-pct positive" style="color:var(--green);">+3.21%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">SOL</span><span class="mover-name">Solana</span></span><span class="mover-pct" style="color:var(--green);">+5.02%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">BTC</span><span class="mover-name">Bitcoin</span></span><span class="mover-pct" style="color:var(--green);">+2.41%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">AMZN</span><span class="mover-name">Amazon</span></span><span class="mover-pct" style="color:var(--green);">+2.15%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">BNB</span><span class="mover-name">Binance Coin</span></span><span class="mover-pct" style="color:var(--green);">+2.10%</span></div>
+        </div>
+
+        <div class="movers-panel">
+          <h3 class="losers"><i class="fas fa-arrow-trend-down"></i> Top Losers</h3>
+          <div class="mover-row"><span><span class="mover-symbol">ETH</span><span class="mover-name">Ethereum</span></span><span class="mover-pct" style="color:var(--red);">-1.18%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">TSLA</span><span class="mover-name">Tesla</span></span><span class="mover-pct" style="color:var(--red);">-0.82%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">DOT</span><span class="mover-name">Polkadot</span></span><span class="mover-pct" style="color:var(--red);">-0.51%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">XRP</span><span class="mover-name">Ripple</span></span><span class="mover-pct" style="color:var(--red);">-0.32%</span></div>
+          <div class="mover-row"><span><span class="mover-symbol">META</span><span class="mover-name">Meta</span></span><span class="mover-pct" style="color:var(--red);">-0.28%</span></div>
+        </div>
+      </div>
+
+      <div class="stocks-footer">
+        <p>Prices are for illustration only. Real-time data available after signing up.</p>
+        <a href="register.html" class="btn btn-gold"><i class="fas fa-chart-line"></i> Start Trading Now</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ABOUT -->
   <section class="block" id="about">
     <div class="container">
       <div class="about-grid">
-        <div>
+        <div class="reveal">
           <span class="kicker" style="color: var(--gold); font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; display:block; margin-bottom:16px;">Our Story</span>
           <h2>Wealth, <span class="gold">Elevated</span>.</h2>
-          <p>
-            KingVest Capital was founded with one belief: everyone deserves access to
-            the same powerful investing tools that institutions have used for decades.
-          </p>
-          <p>
-            We combine modern technology with disciplined strategy to help you build,
-            protect, and grow your wealth — with clarity at every step.
-          </p>
-          <p>
-            No jargon. No hidden fees. No empty promises. Just a clean, secure
-            platform built for investors who take their future seriously.
-          </p>
+          <p>KingVest Capital was founded with one belief: everyone deserves access to the same powerful investing tools that institutions have used for decades.</p>
+          <p>We combine modern technology with disciplined strategy to help you build, protect, and grow your wealth — with clarity at every step.</p>
+          <p>No jargon. No hidden fees. No empty promises. Just a clean, secure platform built for investors who take their future seriously.</p>
         </div>
-        <div class="stats-grid">
-          <div class="stat-box"><h3>$420M+</h3><p>Assets Managed</p></div>
-          <div class="stat-box"><h3>50K+</h3><p>Active Investors</p></div>
-          <div class="stat-box"><h3>98.7%</h3><p>Client Satisfaction</p></div>
+        <div class="stats-grid reveal">
+          <div class="stat-box"><h3 data-count="420" data-suffix="M+">$0M+</h3><p>Assets Managed</p></div>
+          <div class="stat-box"><h3 data-count="50" data-suffix="K+">0K+</h3><p>Active Investors</p></div>
+          <div class="stat-box"><h3 data-count="98" data-suffix=".7%">0%</h3><p>Client Satisfaction</p></div>
           <div class="stat-box"><h3>24/7</h3><p>Live Support</p></div>
         </div>
       </div>
@@ -864,12 +1134,12 @@
   <!-- FEATURES -->
   <section class="block" id="features">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="kicker">Why KingVest</span>
         <h2>Built for <span class="gold">Modern</span> Investors</h2>
         <p>Everything you need to grow and protect your wealth — nothing you don't.</p>
       </div>
-      <div class="features-grid">
+      <div class="features-grid reveal">
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
           <h3>Bank-Grade Security</h3>
@@ -907,32 +1177,16 @@
   <!-- HOW IT WORKS -->
   <section class="block">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="kicker">Simple Process</span>
         <h2>Start in <span class="gold">4 Steps</span></h2>
         <p>From signup to first payout — under 10 minutes.</p>
       </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-num">01</div>
-          <h3>Create Account</h3>
-          <p>Sign up in seconds with your email. No paperwork, no delays.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">02</div>
-          <h3>Fund Wallet</h3>
-          <p>Deposit via crypto, card, or bank transfer. Instant credit to your balance.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">03</div>
-          <h3>Pick a Plan</h3>
-          <p>Choose the plan that fits your goals and let the returns start rolling in.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">04</div>
-          <h3>Withdraw Profits</h3>
-          <p>Request a withdrawal any time. Fast processing, no hidden fees.</p>
-        </div>
+      <div class="steps-grid reveal">
+        <div class="step-card"><div class="step-num">01</div><h3>Create Account</h3><p>Sign up in seconds with your email. No paperwork, no delays.</p></div>
+        <div class="step-card"><div class="step-num">02</div><h3>Fund Wallet</h3><p>Deposit via crypto, card, or bank transfer. Instant credit to your balance.</p></div>
+        <div class="step-card"><div class="step-num">03</div><h3>Pick a Plan</h3><p>Choose the plan that fits your goals and let the returns start rolling in.</p></div>
+        <div class="step-card"><div class="step-num">04</div><h3>Withdraw Profits</h3><p>Request a withdrawal any time. Fast processing, no hidden fees.</p></div>
       </div>
     </div>
   </section>
@@ -940,12 +1194,12 @@
   <!-- PLANS -->
   <section class="block" id="plans">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="kicker">Investment Plans</span>
         <h2>Choose Your <span class="gold">Kingdom</span></h2>
         <p>Four tiers. Simple returns. Full transparency.</p>
       </div>
-      <div class="plans-grid">
+      <div class="plans-grid reveal">
         <div class="plan">
           <h3>Starter</h3>
           <div class="price">$50 – $999</div>
@@ -1001,61 +1255,31 @@
   <!-- LIVE ACTIVITY -->
   <section class="block">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="kicker">Live Platform</span>
         <h2>Real-Time <span class="gold">Activity</span></h2>
         <p>Recent deposits and withdrawals from investors worldwide.</p>
       </div>
-      <div class="activity-grid">
+      <div class="activity-grid reveal">
         <div class="activity-panel">
           <h3><i class="fas fa-arrow-down"></i> Recent Deposits</h3>
           <div class="activity-list">
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">MR</div><div><strong>Michael R.</strong><span>USA</span></div></div>
-              <div class="activity-amount">+$2,500</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">SL</div><div><strong>Sarah L.</strong><span>UK</span></div></div>
-              <div class="activity-amount">+$1,200</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">DK</div><div><strong>David K.</strong><span>Canada</span></div></div>
-              <div class="activity-amount">+$5,000</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">ES</div><div><strong>Emma S.</strong><span>Australia</span></div></div>
-              <div class="activity-amount">+$3,750</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">JP</div><div><strong>James P.</strong><span>Germany</span></div></div>
-              <div class="activity-amount">+$8,900</div>
-            </div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">MR</div><div><strong>Michael R.</strong><span>USA</span></div></div><div class="activity-amount">+$2,500</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">SL</div><div><strong>Sarah L.</strong><span>UK</span></div></div><div class="activity-amount">+$1,200</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">DK</div><div><strong>David K.</strong><span>Canada</span></div></div><div class="activity-amount">+$5,000</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">ES</div><div><strong>Emma S.</strong><span>Australia</span></div></div><div class="activity-amount">+$3,750</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">JP</div><div><strong>James P.</strong><span>Germany</span></div></div><div class="activity-amount">+$8,900</div></div>
           </div>
         </div>
 
         <div class="activity-panel">
           <h3><i class="fas fa-arrow-up"></i> Recent Withdrawals</h3>
           <div class="activity-list">
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">JD</div><div><strong>John D.</strong><span>USA</span></div></div>
-              <div class="activity-amount negative">-$1,400</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">RT</div><div><strong>Robert T.</strong><span>France</span></div></div>
-              <div class="activity-amount negative">-$3,200</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">LM</div><div><strong>Lisa M.</strong><span>Japan</span></div></div>
-              <div class="activity-amount negative">-$2,100</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">TB</div><div><strong>Thomas B.</strong><span>Netherlands</span></div></div>
-              <div class="activity-amount negative">-$4,500</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-user"><div class="avatar">MG</div><div><strong>Maria G.</strong><span>Spain</span></div></div>
-              <div class="activity-amount negative">-$1,800</div>
-            </div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">JD</div><div><strong>John D.</strong><span>USA</span></div></div><div class="activity-amount negative">-$1,400</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">RT</div><div><strong>Robert T.</strong><span>France</span></div></div><div class="activity-amount negative">-$3,200</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">LM</div><div><strong>Lisa M.</strong><span>Japan</span></div></div><div class="activity-amount negative">-$2,100</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">TB</div><div><strong>Thomas B.</strong><span>Netherlands</span></div></div><div class="activity-amount negative">-$4,500</div></div>
+            <div class="activity-item"><div class="activity-user"><div class="avatar">MG</div><div><strong>Maria G.</strong><span>Spain</span></div></div><div class="activity-amount negative">-$1,800</div></div>
           </div>
         </div>
       </div>
@@ -1065,35 +1289,26 @@
   <!-- TESTIMONIALS -->
   <section class="block">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="kicker">Investor Stories</span>
         <h2>Trusted by <span class="gold">Thousands</span></h2>
         <p>What our investors say about KingVest Capital.</p>
       </div>
-      <div class="testimonials-grid">
+      <div class="testimonials-grid reveal">
         <div class="testimonial">
           <div class="stars">★★★★★</div>
           <p>"Clean interface, fast withdrawals, and the dashboard actually makes sense. I've tried three other platforms and KingVest is the only one I've stuck with."</p>
-          <div class="testimonial-author">
-            <div class="avatar">AO</div>
-            <div><strong>Adaeze O.</strong><span>Lagos, Nigeria</span></div>
-          </div>
+          <div class="testimonial-author"><div class="avatar">AO</div><div><strong>Adaeze O.</strong><span>Lagos, Nigeria</span></div></div>
         </div>
         <div class="testimonial">
           <div class="stars">★★★★★</div>
           <p>"Support replies in minutes, not days. That alone puts them above most platforms. The transparency on fees is refreshing."</p>
-          <div class="testimonial-author">
-            <div class="avatar">DM</div>
-            <div><strong>Daniel M.</strong><span>London, UK</span></div>
-          </div>
+          <div class="testimonial-author"><div class="avatar">DM</div><div><strong>Daniel M.</strong><span>London, UK</span></div></div>
         </div>
         <div class="testimonial">
           <div class="stars">★★★★★</div>
           <p>"I started small just to test it. Six months later I've grown my portfolio by 40% and I actually understand where every naira goes."</p>
-          <div class="testimonial-author">
-            <div class="avatar">CK</div>
-            <div><strong>Chidi K.</strong><span>Abuja, Nigeria</span></div>
-          </div>
+          <div class="testimonial-author"><div class="avatar">CK</div><div><strong>Chidi K.</strong><span>Abuja, Nigeria</span></div></div>
         </div>
       </div>
     </div>
@@ -1102,12 +1317,12 @@
   <!-- FAQ -->
   <section class="block" id="faq">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="kicker">Questions</span>
         <h2>Frequently <span class="gold">Asked</span></h2>
         <p>Everything you need to know before getting started.</p>
       </div>
-      <div class="faq-grid">
+      <div class="faq-grid reveal">
         <div class="faq-item">
           <div class="faq-q">How do I create an account? <i class="fas fa-chevron-down"></i></div>
           <div class="faq-a">Click "Get Started", enter your email and a password, and you're in. No paperwork, no verification delays for basic features.</div>
@@ -1158,9 +1373,9 @@
       <div>
         <h4>Platform</h4>
         <a href="#about">About</a>
+        <a href="#markets">Markets</a>
         <a href="#features">Features</a>
         <a href="#plans">Plans</a>
-        <a href="#faq">FAQ</a>
       </div>
       <div>
         <h4>Account</h4>
@@ -1182,17 +1397,15 @@
 
 </div>
 
-<!-- Floating Telegram -->
 <a href="https://t.me/yourchannel" target="_blank" class="floating-telegram">
   <i class="fab fa-telegram"></i>
 </a>
 
-<!-- STARFIELD SCRIPT -->
 <script>
+  // ---------- STARFIELD ----------
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
-  let stars = [];
-  let w, h;
+  let stars = [], w, h;
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -1213,7 +1426,6 @@
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
-
     const gradient = ctx.createRadialGradient(w/2, h/3, 0, w/2, h/3, w/1.2);
     gradient.addColorStop(0, 'rgba(212,175,55,0.04)');
     gradient.addColorStop(1, 'rgba(0,0,0,0)');
@@ -1238,12 +1450,51 @@
   resize();
   draw();
 
-  // FAQ toggle
+  // ---------- FAQ ----------
   document.querySelectorAll('.faq-item').forEach(item => {
     item.querySelector('.faq-q').addEventListener('click', () => {
       item.classList.toggle('open');
     });
   });
+
+  // ---------- SCROLL REVEAL ----------
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ---------- ANIMATED COUNTERS ----------
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        const prefix = el.dataset.prefix || '';
+        const duration = 1500;
+        const start = performance.now();
+
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(ease * target);
+          el.textContent = prefix + current + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+          else el.textContent = prefix + target + suffix;
+        }
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
 </script>
 
 </body>
