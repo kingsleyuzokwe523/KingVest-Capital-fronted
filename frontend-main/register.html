@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Veloxtrades</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/tnnJPyX.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 { text-align: center; color: #10b981; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        .success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .error { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+        .info { background: #e6f3ff; color: #0066cc; border: 1px solid #3b82f6; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+        .link { text-align: center; margin-top: 20px; }
+        .link a { color: #10b981; text-decoration: none; font-weight: 500; }
+        .link a:hover { text-decoration: underline; }
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .password-strength {
+            margin-top: 8px;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .referral-info {
+            background: #f0fdf4;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #10b981;
+            display: none;
+        }
+        .referral-info i {
+            color: #10b981;
+            margin-right: 8px;
+        }
+        .referral-info span {
+            font-weight: 600;
+            color: #059669;
+        }
+        .referral-status {
+            margin-top: 5px;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 4px;
+            display: none;
+        }
+        .referral-status.valid {
+            background: #d1fae5;
+            color: #065f46;
+            display: block;
+        }
+        .referral-status.invalid {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        .referral-status i {
+            margin-right: 5px;
+        }
+        .back-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .back-link a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link a:hover {
+            color: #10b981;
+        }
+        .input-group {
+            position: relative;
+        }
+        .clear-referral {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            width: auto;
+            padding: 5px;
+        }
+        .clear-referral:hover {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-bolt"></i> Join Veloxtrades</h1>
+
+        <div id="message" class="message"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="full_name" placeholder="Enter your full name" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email address" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Choose a username" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Choose a password (min. 6 characters)" required minlength="6">
+                </div>
+                <div id="passwordStrength" class="password-strength"></div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-gift"></i> Referral Code (Optional)</label>
+                <div class="input-group">
+                    <input type="text" id="referral_code" placeholder="Enter referral code if you have one" autocomplete="off">
+                    <button type="button" class="clear-referral" id="clearReferralBtn" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="referralStatus" class="referral-status"></div>
+                <div id="referralInfo" class="referral-info">
+                    <i class="fas fa-star"></i> You're being referred by <span id="referrerName">...</span>! You'll both earn bonuses!
+                </div>
+            </div>
+
+            <button type="submit" id="registerBtn">Register</button>
+        </form>
+
+        <div class="link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+    // ============================================
+    // VELOXTRADES CONFIGURATION - EMBEDDED
+    // ============================================
+    
+    const Veloxtrades = {
+        API_BASE_URL: 'https://investment-gto3.onrender.com',
+        VERSION: '2.2.0',
+
+        isAuthenticated: function() {
+            return !!this.getToken();
+        },
+
+        getToken: function() {
+            const cookieMatch = document.cookie.match(/veloxtrades_token=([^;]+)/);
+            if (cookieMatch) return cookieMatch[1];
+            return localStorage.getItem('veloxtrades_token') || sessionStorage.getItem('veloxtrades_token');
+        },
+
+        setToken: function(token) {
+            const maxAge = 30 * 24 * 60 * 60;
+            document.cookie = `veloxtrades_token=${token}; path=/; max-age=${maxAge}; secure; samesite=Lax`;
+            localStorage.setItem('veloxtrades_token', token);
+            sessionStorage.setItem('veloxtrades_token', token);
+        },
+
+        clearToken: function() {
+            document.cookie = 'veloxtrades_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            localStorage.removeItem('veloxtrades_token');
+            localStorage.removeItem('veloxtrades_user');
+            sessionStorage.removeItem('veloxtrades_token');
+            sessionStorage.removeItem('veloxtrades_user');
+        },
+
+        async request(endpoint, options = {}) {
+            const url = `${this.API_BASE_URL}${endpoint}`;
+            const token = this.getToken();
+            const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                ...options.headers
+            };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    headers,
+                    credentials: 'include',
+                    mode: 'cors'
+                });
+                
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error(data.message || 'Invalid credentials');
+                        }
+                        throw new Error(data.message || data.error || 'API request failed');
+                    }
+                    return data;
+                } else {
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    return { success: true };
+                }
+            } catch (error) {
+                console.error('❌ API Error:', error.message);
+                throw error;
+            }
+        },
+
+        async register(userData) {
+            try {
+                const result = await this.request('/api/register', {
+                    method: 'POST',
+                    body: JSON.stringify(userData)
+                });
+                return result;
+            } catch (error) {
+                return { success: false, message: error.message || 'Registration failed' };
+            }
+        },
+
+        async verifyReferralCode(code) {
+            try {
+                const result = await this.request('/api/verify-referral', {
+                    method: 'POST',
+                    body: JSON.stringify({ referral_code: code })
+                });
+                return result;
+            } catch (error) {
+                return { success: false, valid: false, message: 'Error verifying code' };
+            }
+        },
+
+        checkPasswordStrength: function(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            const texts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            const colors = ['#ef4444', '#f59e0b', '#f59e0b', '#10b981', '#10b981'];
+            return { score: strength, text: texts[strength], color: colors[strength] };
+        },
+
+        async testConnection() {
+            try {
+                const response = await fetch(`${this.API_BASE_URL}/health`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return true;
+            } catch (error) {
+                return false;
+            }
+        },
+
+        getUrlParameter: function(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+    };
+
+    window.Veloxtrades = Veloxtrades;
+
+    // ============================================
+    // REGISTER PAGE CODE WITH REFERRAL
+    // ============================================
+    
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check if already logged in - redirect to dashboard
+        if (Veloxtrades.isAuthenticated()) {
+            window.location.href = 'dashboard.html';
+            return;
+        }
+
+        const registerForm = document.getElementById('registerForm');
+        const registerBtn = document.getElementById('registerBtn');
+        const messageDiv = document.getElementById('message');
+        const passwordInput = document.getElementById('password');
+        const strengthDiv = document.getElementById('passwordStrength');
+        const referralCodeInput = document.getElementById('referral_code');
+        const referralStatusDiv = document.getElementById('referralStatus');
+        const referralInfoDiv = document.getElementById('referralInfo');
+        const referrerNameSpan = document.getElementById('referrerName');
+        const clearReferralBtn = document.getElementById('clearReferralBtn');
+
+        let referralVerified = false;
+        let verifiedReferrer = null;
+
+        // Get referral code from URL parameter
+        const urlReferralCode = Veloxtrades.getUrlParameter('ref');
+        if (urlReferralCode) {
+            referralCodeInput.value = urlReferralCode.toUpperCase();
+            clearReferralBtn.style.display = 'block';
+            // Auto-verify the referral code from URL
+            await verifyReferralCode(urlReferralCode.toUpperCase());
+        }
+
+        // Clear referral button
+        clearReferralBtn.addEventListener('click', function() {
+            referralCodeInput.value = '';
+            referralVerified = false;
+            verifiedReferrer = null;
+            referralStatusDiv.className = 'referral-status';
+            referralStatusDiv.style.display = 'none';
+            referralInfoDiv.style.display = 'none';
+            clearReferralBtn.style.display = 'none';
+        });
+
+        // Password strength checker
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = Veloxtrades.checkPasswordStrength(password);
+            strengthDiv.textContent = strength.text;
+            strengthDiv.style.backgroundColor = '#e8f5e9';
+            strengthDiv.style.color = strength.color;
+            strengthDiv.style.border = `1px solid ${strength.color}`;
+        });
+
+        // Referral code verification
+        referralCodeInput.addEventListener('input', async function() {
+            const code = this.value.trim().toUpperCase();
+            this.value = code;
+            
+            if (code.length < 3) {
+                referralStatusDiv.style.display = 'none';
+                referralInfoDiv.style.display = 'none';
+                clearReferralBtn.style.display = 'none';
+                referralVerified = false;
+                verifiedReferrer = null;
+                return;
+            }
+            
+            clearReferralBtn.style.display = 'block';
+            await verifyReferralCode(code);
+        });
+
+        async function verifyReferralCode(code) {
+            try {
+                referralStatusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verifying referral code...';
+                referralStatusDiv.className = 'referral-status';
+                referralStatusDiv.style.display = 'block';
+                
+                const result = await Veloxtrades.verifyReferralCode(code);
+                
+                if (result.valid) {
+                    referralVerified = true;
+                    verifiedReferrer = result.referrer;
+                    referralStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Valid referral code from ${result.referrer}!`;
+                    referralStatusDiv.className = 'referral-status valid';
+                    referralInfoDiv.style.display = 'block';
+                    referrerNameSpan.textContent = result.referrer;
+                } else {
+                    referralVerified = false;
+                    verifiedReferrer = null;
+                    referralStatusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ❌ Invalid referral code`;
+                    referralStatusDiv.className = 'referral-status invalid';
+                    referralInfoDiv.style.display = 'none';
+                }
+            } catch (error) {
+                referralVerified = false;
+                referralStatusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error verifying code`;
+                referralStatusDiv.className = 'referral-status invalid';
+                referralInfoDiv.style.display = 'none';
+            }
+        }
+
+        function showMessage(text, type = 'info') {
+            messageDiv.style.display = 'block';
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${text}`;
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function setLoading(isLoading) {
+            registerBtn.disabled = isLoading;
+            if (isLoading) {
+                registerBtn.innerHTML = '<span class="loading-spinner"></span> Creating account...';
+            } else {
+                registerBtn.innerHTML = 'Register';
+            }
+        }
+
+        function validateInputs() {
+            const fullName = document.getElementById('full_name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!fullName) {
+                showMessage('Please enter your full name', 'warning');
+                document.getElementById('full_name').focus();
+                return false;
+            }
+
+            if (!email) {
+                showMessage('Please enter your email', 'warning');
+                document.getElementById('email').focus();
+                return false;
+            }
+
+            if (!email.includes('@') || !email.includes('.')) {
+                showMessage('Please enter a valid email address', 'warning');
+                document.getElementById('email').focus();
+                return false;
+            }
+
+            if (!username) {
+                showMessage('Please choose a username', 'warning');
+                document.getElementById('username').focus();
+                return false;
+            }
+
+            if (username.length < 3) {
+                showMessage('Username must be at least 3 characters', 'warning');
+                document.getElementById('username').focus();
+                return false;
+            }
+
+            if (!password) {
+                showMessage('Please enter a password', 'warning');
+                passwordInput.focus();
+                return false;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'warning');
+                passwordInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!validateInputs()) {
+                return;
+            }
+
+            const formData = {
+                full_name: document.getElementById('full_name').value.trim(),
+                email: document.getElementById('email').value.trim().toLowerCase(),
+                username: document.getElementById('username').value.trim().toLowerCase(),
+                password: passwordInput.value.trim()
+            };
+
+            // Add referral code if verified
+            if (referralVerified && referralCodeInput.value.trim()) {
+                formData.referral_code = referralCodeInput.value.trim().toUpperCase();
+            }
+
+            setLoading(true);
+            showMessage('Creating your account...', 'info');
+
+            try {
+                const result = await Veloxtrades.register(formData);
+                
+                if (result.success) {
+                    let successMessage = '✅ Registration successful! Redirecting to login...';
+                    if (formData.referral_code) {
+                        successMessage = '✅ Registration successful! You were referred by someone. Redirecting to login...';
+                    }
+                    showMessage(successMessage, 'success');
+                    
+                    registerForm.reset();
+                    strengthDiv.textContent = '';
+                    referralStatusDiv.style.display = 'none';
+                    referralInfoDiv.style.display = 'none';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html?registered=true';
+                    }, 2000);
+                } else {
+                    showMessage(result.message || 'Registration failed', 'error');
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage('Connection error. Please try again.', 'error');
+                setLoading(false);
+            }
+        });
+
+        // Test backend connection silently
+        Veloxtrades.testConnection().catch(() => {});
+    });
+    </script>
+</body>
+</html>
