@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Plans — KingVest Capital</title>
+<meta name="description" content="Choose from four investment plans built for every level of investor. Simple, transparent, disciplined.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --black: #000000;
+    --black-soft: #0a0a0a;
+    --white: #ffffff;
+    --white-dim: #b8b8b8;
+    --white-mute: #6b6b6b;
+    --gold: #D4AF37;
+    --gold-light: #F4D77E;
+    --border: rgba(255,255,255,0.08);
+    --border-gold: rgba(212,175,55,0.25);
+    --green: #10B981;
+    --red: #EF4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.15; }
+  a { text-decoration: none; color: inherit; }
+
+  #starfield {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+  .orb {
+    position: fixed; border-radius: 50%;
+    filter: blur(100px); z-index: 0; pointer-events: none;
+    opacity: 0.35; animation: orbFloat 20s ease-in-out infinite;
+  }
+  .orb-1 { width: 500px; height: 500px; background: rgba(212,175,55,0.25); top: -100px; left: -100px; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(212,175,55,0.15); bottom: 10%; right: -100px; animation-delay: -7s; }
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-40px,60px) scale(0.95); }
+  }
+  .content-wrap { position: relative; z-index: 1; }
+
+  .navbar {
+    position: sticky; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 32px; max-width: 1280px; margin: 0 auto;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 800;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo .crown { color: var(--gold); font-size: 22px; }
+  .logo span.gold { color: var(--gold); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-weight: 500; font-size: 14px;
+    color: var(--white-dim);
+    transition: color .25s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-cta {
+    padding: 10px 22px;
+    background: var(--gold);
+    color: var(--black) !important;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 0 20px rgba(212,175,55,0.3);
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-cta::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    animation: shimmer 3s infinite;
+  }
+  @keyframes shimmer { 0% { left: -100%; } 100% { left: 200%; } }
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 30px rgba(212,175,55,0.6);
+    background: var(--gold-light);
+  }
+  .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--white); }
+
+  .page-hero {
+    padding: 100px 32px 60px;
+    text-align: center;
+    max-width: 900px; margin: 0 auto;
+  }
+  .page-hero .breadcrumb {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--white-mute);
+    margin-bottom: 24px;
+    padding: 6px 16px;
+    background: rgba(212,175,55,0.05);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+  }
+  .page-hero .breadcrumb a { color: var(--gold); transition: color .2s; }
+  .page-hero .breadcrumb i { font-size: 10px; }
+  .page-hero h1 {
+    font-size: 68px;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .page-hero h1 .gold { color: var(--gold); font-style: italic; }
+  .page-hero p {
+    color: var(--white-dim);
+    font-size: 19px; font-weight: 300;
+    max-width: 640px; margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  section.block { padding: 100px 32px; position: relative; }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .section-header { text-align: center; max-width: 720px; margin: 0 auto 64px; }
+  .section-header .kicker {
+    color: var(--gold); font-weight: 700; font-size: 12px;
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 16px; display: block;
+  }
+  .section-header h2 {
+    font-size: 48px; color: var(--white);
+    margin-bottom: 18px; letter-spacing: -1px;
+  }
+  .section-header h2 .gold { color: var(--gold); font-style: italic; }
+  .section-header p { color: var(--white-dim); font-size: 17px; font-weight: 300; }
+
+  /* PLANS GRID */
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .plan {
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px 32px;
+    transition: all .35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .plan::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0; transition: opacity .35s;
+  }
+  .plan:hover {
+    border-color: var(--border-gold);
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.1);
+  }
+  .plan:hover::before { opacity: 1; }
+  .plan.featured {
+    border-color: var(--border-gold);
+    background: linear-gradient(160deg, rgba(212,175,55,0.06), rgba(212,175,55,0.01));
+    box-shadow: 0 0 60px rgba(212,175,55,0.15);
+    transform: scale(1.03);
+  }
+  .plan.featured:hover { transform: scale(1.03) translateY(-8px); }
+  .plan-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--black);
+    padding: 6px 20px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    box-shadow: 0 8px 20px rgba(212,175,55,0.4);
+    white-space: nowrap;
+  }
+  .plan-icon {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.03));
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .plan.featured .plan-icon {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--black);
+    border-color: transparent;
+    box-shadow: 0 10px 30px rgba(212,175,55,0.4);
+  }
+  .plan h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--white-dim);
+    margin-bottom: 8px;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .plan .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px; color: var(--white);
+    margin-bottom: 24px; letter-spacing: -0.5px;
+  }
+  .plan .roi {
+    background: rgba(212,175,55,0.08);
+    border: 1px solid var(--border-gold);
+    border-radius: 14px;
+    padding: 18px; text-align: center;
+    margin-bottom: 28px;
+  }
+  .plan .roi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px; color: var(--gold);
+    font-weight: 700; letter-spacing: -1px;
+    line-height: 1;
+  }
+  .plan .roi-label {
+    font-size: 11px; color: var(--white-mute);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-top: 6px;
+  }
+  .plan ul {
+    list-style: none;
+    margin-bottom: 32px;
+  }
+  .plan ul li {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    font-size: 14px; color: var(--white-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .plan ul li:last-child { border-bottom: none; }
+  .plan ul li i {
+    color: var(--gold); font-size: 13px;
+    width: 16px; flex-shrink: 0;
+  }
+  .plan-btn {
+    width: 100%; justify-content: center;
+    padding: 16px; border-radius: 12px;
+    font-weight: 600; font-size: 15px;
+    transition: all .25s; cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: transparent; color: var(--white);
+    font-family: 'Inter', sans-serif;
+    text-align: center; display: flex;
+    align-items: center; gap: 10px;
+  }
+  .plan-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .plan.featured .plan-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--black);
+    border: none;
+    box-shadow: 0 10px 30px rgba(212,175,55,0.4);
+  }
+  .plan.featured .plan-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(212,175,55,0.6);
+  }
+
+  /* COMPARISON TABLE */
+  .compare-wrap {
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 40px;
+    overflow-x: auto;
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+  .compare-table th {
+    padding: 22px 24px;
+    font-size: 12px; font-weight: 700;
+    color: var(--white-mute);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+  }
+  .compare-table th:first-child { text-align: left; }
+  .compare-table th.featured-col {
+    background: rgba(212,175,55,0.06);
+    color: var(--gold);
+  }
+  .compare-table td {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--white-dim);
+    text-align: center;
+  }
+  .compare-table td:first-child {
+    text-align: left;
+    color: var(--white);
+    font-weight: 500;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(212,175,55,0.02); }
+  .compare-table td.featured-col { background: rgba(212,175,55,0.04); }
+  .compare-table .yes { color: var(--green); font-size: 16px; }
+  .compare-table .no { color: var(--white-mute); font-size: 16px; }
+
+  /* HOW IT WORKS */
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .step-card {
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 28px;
+    transition: all .35s;
+    position: relative;
+  }
+  .step-card:hover {
+    border-color: var(--border-gold);
+    transform: translateY(-4px);
+  }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px; color: rgba(212,175,55,0.25);
+    line-height: 1; margin-bottom: 16px; font-weight: 800;
+  }
+  .step-card h3 {
+    font-size: 20px; color: var(--white);
+    margin-bottom: 12px; font-weight: 700;
+  }
+  .step-card p { color: var(--white-dim); font-size: 14px; font-weight: 300; }
+
+  /* FAQ */
+  .faq-grid { max-width: 800px; margin: 0 auto; }
+  .faq-item {
+    background: rgba(15,15,15,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color .3s;
+  }
+  .faq-item:hover { border-color: var(--border-gold); }
+  .faq-q {
+    padding: 22px 26px;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; font-size: 16px;
+    color: var(--white);
+    user-select: none;
+  }
+  .faq-q i { color: var(--gold); transition: transform .3s; }
+  .faq-item.open .faq-q i { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height .35s ease, padding .35s ease;
+    padding: 0 26px;
+    color: var(--white-dim); font-size: 15px;
+    line-height: 1.7; font-weight: 300;
+  }
+  .faq-item.open .faq-a { max-height: 400px; padding: 0 26px 22px; }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 100px 32px;
+    position: relative;
+    border-top: 1px solid var(--border);
+    background: radial-gradient(ellipse at center, rgba(212,175,55,0.08) 0%, transparent 70%);
+  }
+  .cta-section h2 {
+    font-size: 48px; margin-bottom: 20px;
+    letter-spacing: -1.5px;
+  }
+  .cta-section h2 .gold { color: var(--gold); font-style: italic; }
+  .cta-section p {
+    color: var(--white-dim); font-size: 18px;
+    margin-bottom: 40px; font-weight: 300;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 34px;
+    border-radius: 10px;
+    font-weight: 600; font-size: 15px;
+    transition: all .3s;
+    cursor: pointer; border: none;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: var(--black);
+    box-shadow: 0 10px 40px rgba(212,175,55,0.35);
+  }
+  .btn-gold::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: shimmer 3s infinite;
+  }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 15px 50px rgba(212,175,55,0.55); }
+
+  footer {
+    background: var(--black-soft);
+    border-top: 1px solid var(--border);
+    padding: 60px 32px 30px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; max-width: 1280px; margin: 0 auto 40px;
+  }
+  .footer-grid h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--gold);
+    margin-bottom: 20px; font-weight: 600;
+  }
+  .footer-grid p, .footer-grid a {
+    color: var(--white-dim); font-size: 14px;
+    display: block; margin-bottom: 10px;
+    transition: color .2s;
+  }
+  .footer-grid a:hover { color: var(--gold); }
+  .footer-bottom {
+    text-align: center; padding-top: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--white-mute); font-size: 13px;
+    max-width: 1280px; margin: 0 auto;
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 968px) {
+    .page-hero h1 { font-size: 42px; }
+    .section-header h2 { font-size: 32px; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .cta-section h2 { font-size: 32px; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; background: rgba(0,0,0,0.98);
+      padding: 24px; gap: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-links.open { display: flex; }
+    .mobile-toggle { display: block; }
+    .plan.featured { transform: none; }
+    .plan.featured:hover { transform: translateY(-8px); }
+  }
+  @media (max-width: 560px) {
+    .page-hero h1 { font-size: 32px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="content-wrap">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <i class="fas fa-crown crown"></i>
+        KING<span class="gold">VEST</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="markets.html">Markets</a>
+        <a href="about.html">About</a>
+        <a href="features.html">Features</a>
+        <a href="plans.html" class="active">Plans</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+        <a href="register.html" class="nav-cta">Get Started</a>
+      </div>
+      <div class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="breadcrumb">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Investment Plans</span>
+    </div>
+    <h1>Choose Your <span class="gold">Kingdom</span>.</h1>
+    <p>Four simple plans built for every investor — from your first $50 to a serious portfolio.</p>
+  </section>
+
+  <!-- PLANS -->
+  <section class="block" style="padding-top: 0;">
+    <div class="container">
+      <div class="plans-grid reveal">
+
+        <!-- STARTER -->
+        <div class="plan">
+          <div class="plan-icon"><i class="fas fa-seedling"></i></div>
+          <h3>Starter</h3>
+          <div class="price">$50 – $999</div>
+          <div class="roi">
+            <div class="roi-value">8%</div>
+            <div class="roi-label">In 20 Hours</div>
+          </div>
+          <ul>
+            <li><i class="fas fa-check"></i> Entry-level access</li>
+            <li><i class="fas fa-check"></i> Daily payouts</li>
+            <li><i class="fas fa-check"></i> Email support</li>
+            <li><i class="fas fa-check"></i> Basic portfolio insights</li>
+            <li><i class="fas fa-check"></i> No hidden fees</li>
+          </ul>
+          <a href="register.html" class="plan-btn">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <!-- ADVANCED (Featured) -->
+        <div class="plan featured">
+          <div class="plan-badge">Most Popular</div>
+          <div class="plan-icon"><i class="fas fa-rocket"></i></div>
+          <h3>Advanced</h3>
+          <div class="price">$1,000 – $5,000</div>
+          <div class="roi">
+            <div class="roi-value">18%</div>
+            <div class="roi-label">In 2 Days</div>
+          </div>
+          <ul>
+            <li><i class="fas fa-check"></i> Higher returns</li>
+            <li><i class="fas fa-check"></i> Priority support</li>
+            <li><i class="fas fa-check"></i> Portfolio insights</li>
+            <li><i class="fas fa-check"></i> Advanced analytics</li>
+            <li><i class="fas fa-check"></i> Faster withdrawals</li>
+          </ul>
+          <a href="register.html" class="plan-btn">Invest Now <i class="fas fa-crown"></i></a>
+        </div>
+
+        <!-- PROFESSIONAL -->
+        <div class="plan">
+          <div class="plan-icon"><i class="fas fa-briefcase"></i></div>
+          <h3>Professional</h3>
+          <div class="price">$5,001 – $10,000</div>
+          <div class="roi">
+            <div class="roi-value">35%</div>
+            <div class="roi-label">In 4 Days</div>
+          </div>
+          <ul>
+            <li><i class="fas fa-check"></i> Premium returns</li>
+            <li><i class="fas fa-check"></i> Dedicated manager</li>
+            <li><i class="fas fa-check"></i> Custom strategies</li>
+            <li><i class="fas fa-check"></i> Quarterly reports</li>
+            <li><i class="fas fa-check"></i> Priority withdrawals</li>
+          </ul>
+          <a href="register.html" class="plan-btn">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <!-- CLASSIC -->
+        <div class="plan">
+          <div class="plan-icon"><i class="fas fa-gem"></i></div>
+          <h3>Classic</h3>
+          <div class="price">$10,001+</div>
+          <div class="roi">
+            <div class="roi-value">50%</div>
+            <div class="roi-label">In 6 Days</div>
+          </div>
+          <ul>
+            <li><i class="fas fa-check"></i> Concierge service</li>
+            <li><i class="fas fa-check"></i> VIP support line</li>
+            <li><i class="fas fa-check"></i> Exclusive events</li>
+            <li><i class="fas fa-check"></i> Custom portfolio design</li>
+            <li><i class="fas fa-check"></i> Direct line to advisor</li>
+          </ul>
+          <a href="contact.html" class="plan-btn">Contact Sales <i class="fas fa-headset"></i></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="block" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="kicker">Compare Plans</span>
+        <h2>Side by <span class="gold">Side</span></h2>
+        <p>See exactly what's included in each plan.</p>
+      </div>
+
+      <div class="compare-wrap reveal">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Starter</th>
+              <th class="featured-col">Advanced</th>
+              <th>Professional</th>
+              <th>Classic</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Minimum Investment</td>
+              <td>$50</td>
+              <td class="featured-col">$1,000</td>
+              <td>$5,001</td>
+              <td>$10,001</td>
+            </tr>
+            <tr>
+              <td>ROI</td>
+              <td>8%</td>
+              <td class="featured-col">18%</td>
+              <td>35%</td>
+              <td>50%</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>20 Hours</td>
+              <td class="featured-col">2 Days</td>
+              <td>4 Days</td>
+              <td>6 Days</td>
+            </tr>
+            <tr>
+              <td>24/7 Support</td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+              <td class="featured-col"><i class="fas fa-check-circle yes"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+            </tr>
+            <tr>
+              <td>Priority Support</td>
+              <td><i class="fas fa-times-circle no"></i></td>
+              <td class="featured-col"><i class="fas fa-check-circle yes"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+            </tr>
+            <tr>
+              <td>Dedicated Manager</td>
+              <td><i class="fas fa-times-circle no"></i></td>
+              <td class="featured-col"><i class="fas fa-times-circle no"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+            </tr>
+            <tr>
+              <td>Custom Portfolio</td>
+              <td><i class="fas fa-times-circle no"></i></td>
+              <td class="featured-col"><i class="fas fa-times-circle no"></i></td>
+              <td><i class="fas fa-times-circle no"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+            </tr>
+            <tr>
+              <td>VIP Concierge</td>
+              <td><i class="fas fa-times-circle no"></i></td>
+              <td class="featured-col"><i class="fas fa-times-circle no"></i></td>
+              <td><i class="fas fa-times-circle no"></i></td>
+              <td><i class="fas fa-check-circle yes"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="block" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="kicker">Simple Process</span>
+        <h2>How It <span class="gold">Works</span></h2>
+        <p>From signup to your first payout — under 10 minutes.</p>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h3>Create Account</h3>
+          <p>Sign up in seconds with your email. No paperwork, no delays.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h3>Fund Wallet</h3>
+          <p>Deposit via crypto, card, or bank transfer. Instant credit.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h3>Pick a Plan</h3>
+          <p>Choose the plan that fits your goals and let the returns start rolling.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <h3>Withdraw Profits</h3>
+          <p>Request a withdrawal any time. Fast processing, no hidden fees.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="kicker">Questions</span>
+        <h2>Plan <span class="gold">FAQs</span></h2>
+        <p>Everything you need to know before choosing a plan.</p>
+      </div>
+      <div class="faq-grid reveal">
+        <div class="faq-item">
+          <div class="faq-q">How do I choose the right plan? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Start with the plan that matches your available capital. You can always move up to a higher plan later as your portfolio grows. Each plan shows its minimum, maximum, ROI, and duration clearly.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I invest in multiple plans at once? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Yes. You can have multiple active investments across different plans at the same time. Each one runs independently with its own ROI and duration.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What happens when my plan ends? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">When a plan completes, your principal plus the ROI is credited to your wallet automatically. You can then withdraw it or reinvest in a new plan.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Are there any hidden fees? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">No. Every fee is visible before you commit. There are no setup fees, no monthly fees, and no charges for withdrawing your profits.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I upgrade my plan later? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Absolutely. Once you have enough balance, you can start an investment in any plan tier that fits your capital — no restrictions.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How fast are withdrawals? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Most withdrawals are processed within 24 hours. Advanced, Professional, and Classic plan members get priority processing — usually within a few hours.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to Pick Your <span class="gold">Plan</span>?</h2>
+    <p>Join thousands of investors already growing with KingVest Capital.</p>
+    <a href="register.html" class="btn btn-gold">
+      <i class="fas fa-crown"></i> Create Free Account
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom: 16px;">
+          <i class="fas fa-crown crown"></i>
+          KING<span class="gold">VEST</span>
+        </div>
+        <p>Invest like royalty. A premium, transparent wealth platform for the modern investor.</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <a href="about.html">About</a>
+        <a href="markets.html">Markets</a>
+        <a href="features.html">Features</a>
+        <a href="plans.html">Plans</a>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
+        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 KingVest Capital. All rights reserved. Investing involves risk.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [], w, h;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = [];
+    const count = Math.floor((w * h) / 9000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.4 + 0.3,
+        speed: Math.random() * 0.3 + 0.05,
+        alpha: Math.random() * 0.7 + 0.2,
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const gradient = ctx.createRadialGradient(w/2, h/3, 0, w/2, h/3, w/1.2);
+    gradient.addColorStop(0, 'rgba(212,175,55,0.04)');
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, w, h);
+
+    stars.forEach(s => {
+      s.pulse += 0.02;
+      const twinkle = 0.6 + Math.sin(s.pulse) * 0.4;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.alpha * twinkle})`;
+      ctx.fill();
+      s.y += s.speed;
+      if (s.y > h) s.y = 0;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
