@@ -1,630 +1,625 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Login - Veloxtrades</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/tnnJPyX.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #10b981, #34d399);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .login-container { width: 100%; max-width: 400px; }
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            padding: 40px;
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        .logo { text-align: center; margin-bottom: 30px; }
-        .logo i { font-size: 48px; color: #10b981; }
-        .logo h1 { font-size: 28px; color: #10b981; margin-top: 10px; }
-        .logo p { color: #6b7280; font-size: 14px; margin-top: 5px; }
-        h2 { text-align: center; color: #1f2937; margin-bottom: 10px; font-size: 24px; }
-        .subtitle { text-align: center; color: #6b7280; margin-bottom: 30px; font-size: 14px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; color: #374151; font-weight: 500; font-size: 14px; }
-        .input-group { position: relative; }
-        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
-        input {
-            width: 100%;
-            padding: 12px 16px 12px 45px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        input:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background: #10b981;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .login-btn:hover:not(:disabled) { background: #059669; transform: translateY(-1px); }
-        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .message {
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-        .message.error { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; display: block; }
-        .message.success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; display: block; }
-        .message.info { background: #e6f3ff; color: #0066cc; border: 1px solid #3b82f6; display: block; }
-        .message.warning { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; display: block; }
-        .forgot-password { text-align: right; margin-top: 8px; }
-        .forgot-password a { color: #6b7280; text-decoration: none; font-size: 13px; }
-        .forgot-password a:hover { color: #10b981; }
-        .link { text-align: center; margin-top: 20px; }
-        .link a { color: #10b981; text-decoration: none; font-weight: 500; }
-        .link a:hover { text-decoration: underline; }
-        .home-link {
-            text-align: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e5e7eb;
-        }
-        .home-link a {
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .home-link a:hover { color: #10b981; }
-        .loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ffffff;
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .version-badge { text-align: center; font-size: 10px; color: #9ca3af; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb; }
-        .clear-session-btn { margin-top: 15px; text-align: center; }
-        .clear-session-btn button { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; text-decoration: underline; }
-        .clear-session-btn button:hover { color: #dc2626; }
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-        .remember-me input { width: auto; padding: 0; margin: 0; }
-        .remember-me label { margin: 0; font-size: 14px; color: #6b7280; cursor: pointer; }
-        .alert-banner {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        .alert-banner i { color: #f59e0b; margin-right: 8px; }
-        .referral-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 15px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .demo-credentials {
-            background: #f3f4f6;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 15px;
-            font-size: 12px;
-            text-align: center;
-        }
-        .demo-credentials p {
-            color: #6b7280;
-            margin: 5px 0;
-        }
-        .demo-credentials code {
-            background: #e5e7eb;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — KingVest Capital</title>
+<meta name="description" content="Sign in to your KingVest Capital account.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --black: #000000;
+    --black-soft: #0a0a0a;
+    --white: #ffffff;
+    --white-dim: #b8b8b8;
+    --white-mute: #6b6b6b;
+    --gold: #D4AF37;
+    --gold-light: #F4D77E;
+    --border: rgba(255,255,255,0.08);
+    --border-gold: rgba(212,175,55,0.25);
+    --green: #10B981;
+    --red: #EF4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.15; }
+  a { text-decoration: none; color: inherit; }
+
+  #starfield {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+  .orb {
+    position: fixed; border-radius: 50%;
+    filter: blur(100px); z-index: 0; pointer-events: none;
+    opacity: 0.35; animation: orbFloat 20s ease-in-out infinite;
+  }
+  .orb-1 { width: 500px; height: 500px; background: rgba(212,175,55,0.25); top: -100px; left: -100px; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(212,175,55,0.15); bottom: 10%; right: -100px; animation-delay: -7s; }
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-40px,60px) scale(0.95); }
+  }
+
+  .auth-wrap {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* LEFT — IMAGE SIDE */
+  .auth-visual {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0a0a0a 0%, #000 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px;
+  }
+  .auth-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.85) 100%),
+      radial-gradient(circle at 30% 30%, rgba(212,175,55,0.15), transparent 60%);
+    z-index: 2;
+  }
+  .auth-visual img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%) brightness(80%);
+    z-index: 1;
+  }
+  .visual-top, .visual-bottom {
+    position: relative; z-index: 3;
+  }
+  .visual-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 800;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--white);
+  }
+  .visual-logo .crown { color: var(--gold); font-size: 22px; }
+  .visual-logo span.gold { color: var(--gold); }
+
+  .visual-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(212,175,55,0.12);
+    border: 1px solid var(--border-gold);
+    color: var(--gold-light);
+    padding: 8px 16px; border-radius: 30px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .visual-badge i { color: var(--gold); }
+
+  .visual-bottom h2 {
+    font-size: 44px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+    color: var(--white);
+  }
+  .visual-bottom h2 .gold { color: var(--gold); font-style: italic; }
+  .visual-bottom p {
+    color: var(--white-dim);
+    font-size: 15px; font-weight: 300;
+    max-width: 400px;
+    line-height: 1.7;
+  }
+  .visual-stats {
+    display: flex; gap: 28px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .visual-stats .vstat h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; color: var(--gold);
+    letter-spacing: -0.5px;
+    margin-bottom: 2px;
+  }
+  .visual-stats .vstat p {
+    font-size: 11px; color: var(--white-mute);
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+
+  /* RIGHT — FORM SIDE */
+  .auth-form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    overflow-y: auto;
+  }
+  .auth-form-box {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .form-header {
+    margin-bottom: 36px;
+  }
+  .form-header .kicker {
+    color: var(--gold); font-weight: 700; font-size: 12px;
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 12px; display: block;
+  }
+  .form-header h1 {
+    font-size: 40px;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+    color: var(--white);
+  }
+  .form-header h1 .gold { color: var(--gold); font-style: italic; }
+  .form-header p {
+    color: var(--white-dim);
+    font-size: 15px; font-weight: 300;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .form-group label {
+    display: block;
+    font-size: 11px; font-weight: 600;
+    color: var(--white-dim);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .input-wrap > i {
+    position: absolute;
+    left: 18px;
+    color: var(--white-mute);
+    font-size: 14px;
+    transition: color .25s;
+    pointer-events: none;
+  }
+  .form-control {
+    width: 100%;
+    padding: 14px 18px 14px 48px;
+    background: rgba(15,15,15,0.7);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--white);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: all .25s;
+  }
+  .form-control::placeholder { color: var(--white-mute); }
+  .form-control:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(15,15,15,0.9);
+    box-shadow: 0 0 0 4px rgba(212,175,55,0.1);
+  }
+  .input-wrap:focus-within > i { color: var(--gold); }
+  .toggle-pw {
+    position: absolute;
+    right: 18px;
+    background: none; border: none;
+    color: var(--white-mute);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px;
+    transition: color .2s;
+  }
+  .toggle-pw:hover { color: var(--gold); }
+
+  /* REMEMBER + FORGOT ROW */
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 24px;
+    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .remember {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--white-dim);
+    font-weight: 300;
+    cursor: pointer;
+    user-select: none;
+  }
+  .remember input {
+    accent-color: var(--gold);
+    width: 16px; height: 16px;
+    cursor: pointer;
+  }
+  .forgot {
+    color: var(--gold);
+    font-weight: 600;
+    transition: color .2s;
+  }
+  .forgot:hover { color: var(--gold-light); }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--black);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700; font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all .3s;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(212,175,55,0.35);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+  }
+  .submit-btn::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: shimmer 3s infinite;
+  }
+  @keyframes shimmer { 0% { left: -100%; } 100% { left: 200%; } }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(212,175,55,0.55);
+  }
+  .submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--white-dim);
+    font-weight: 300;
+  }
+  .form-footer a {
+    color: var(--gold);
+    font-weight: 600;
+    transition: color .2s;
+  }
+  .form-footer a:hover { color: var(--gold-light); }
+
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 24px 0;
+    color: var(--white-mute);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .social-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .social-btn {
+    padding: 12px;
+    background: rgba(15,15,15,0.7);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--white-dim);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .social-btn:hover {
+    border-color: var(--border-gold);
+    color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 30px; right: 30px;
+    background: rgba(15,15,15,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-gold);
+    border-left: 3px solid var(--green);
+    color: var(--white);
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all .4s;
+    pointer-events: none;
+    max-width: 340px;
+  }
+  .toast.show { opacity: 1; transform: translateX(0); }
+  .toast.error { border-left-color: var(--red); }
+  .toast i { margin-right: 8px; }
+  .toast.success i { color: var(--green); }
+  .toast.error i { color: var(--red); }
+
+  /* RESPONSIVE */
+  @media (max-width: 968px) {
+    .auth-wrap { grid-template-columns: 1fr; }
+    .auth-visual {
+      padding: 40px 24px;
+      min-height: 340px;
+    }
+    .visual-bottom h2 { font-size: 32px; }
+    .visual-stats { display: none; }
+    .auth-form-side { padding: 40px 24px; }
+    .form-header h1 { font-size: 32px; }
+  }
+  @media (max-width: 560px) {
+    .auth-visual { padding: 32px 20px; min-height: 260px; }
+    .visual-bottom h2 { font-size: 26px; }
+    .auth-form-side { padding: 32px 20px; }
+    .social-row { grid-template-columns: 1fr; }
+    .form-row { justify-content: center; text-align: center; }
+  }
+</style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="logo">
-                <i class="fas fa-bolt"></i>
-                <h1>VELOXTRADES</h1>
-                <p>The Velocity of Wealth</p>
-            </div>
-            <div id="referralBadge" style="display: none;" class="referral-badge">
-                <i class="fas fa-gift"></i>
-                <span id="referralMessage">You were referred! Get bonus on signup!</span>
-            </div>
-            <h2>Welcome Back</h2>
-            <div class="subtitle">Sign in to your account</div>
-            
-            <div id="alertBanner" class="alert-banner">
-                <i class="fas fa-info-circle"></i>
-                <span id="alertMessage"></span>
-            </div>
-            
-            <div id="message" class="message"></div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Username or Email</label>
-                    <div class="input-group">
-                        <i class="fas fa-envelope"></i>
-                        <input type="text" id="username" placeholder="Enter your username or email" autocomplete="username" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <div class="input-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="forgot-password.html">Forgot password?</a>
-                    </div>
-                </div>
-                <div class="remember-me">
-                    <input type="checkbox" id="rememberMe">
-                    <label for="rememberMe">Remember me</label>
-                </div>
-                <button type="submit" id="loginBtn" class="login-btn">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-            </form>
-            
-            <div class="link">
-                Don't have an account? <a href="register.html" id="registerLink">Create account</a>
-            </div>
-            
-            <div class="home-link">
-                <a href="index.html"><i class="fas fa-home"></i> Back to Home</a>
-            </div>
-            
-            <div class="clear-session-btn">
-                <button id="clearSessionBtn" type="button">Clear saved session</button>
-            </div>
-            <div class="version-badge">
-                Version 3.2.0 - Referral Ready | Dual Database Mode
-            </div>
-        </div>
+
+<canvas id="starfield"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="auth-wrap">
+
+  <!-- LEFT: IMAGE SIDE -->
+  <div class="auth-visual">
+    <img src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=1400&q=80" alt="Markets">
+    <div class="visual-top">
+      <a href="index.html" class="visual-logo">
+        <i class="fas fa-crown crown"></i>
+        KING<span class="gold">VEST</span>
+      </a>
     </div>
+    <div class="visual-bottom">
+      <span class="visual-badge"><i class="fas fa-crown"></i> Welcome Back</span>
+      <h2>Your <span class="gold">Kingdom</span> Awaits.</h2>
+      <p>Sign in to track your portfolio, monitor markets, and manage your investments — all in one place.</p>
+      <div class="visual-stats">
+        <div class="vstat"><h4>50K+</h4><p>Investors</p></div>
+        <div class="vstat"><h4>$420M+</h4><p>Traded</p></div>
+        <div class="vstat"><h4>24/7</h4><p>Support</p></div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-    const API_BASE_URL = 'https://investment-gto3.onrender.com';
-    let autoRedirectInProgress = false;
-    let referralCodeFromUrl = null;
+  <!-- RIGHT: FORM SIDE -->
+  <div class="auth-form-side">
+    <div class="auth-form-box">
 
-    // Function to get token from any storage
-    function getToken() {
-        let token = sessionStorage.getItem('veloxtrades_token');
-        if (!token) token = localStorage.getItem('veloxtrades_token');
-        if (!token) {
-            const match = document.cookie.match(/veloxtrades_token=([^;]+)/);
-            if (match) token = match[1];
-        }
-        return token;
+      <div class="form-header">
+        <span class="kicker">Sign In</span>
+        <h1>Welcome <span class="gold">Back</span>.</h1>
+        <p>New to KingVest? <a href="register.html" style="color: var(--gold); font-weight: 600;">Create an account</a></p>
+      </div>
+
+      <form id="loginForm" onsubmit="submitForm(event)">
+
+        <div class="form-group">
+          <label for="identifier">Email or Username</label>
+          <div class="input-wrap">
+            <i class="fas fa-user"></i>
+            <input type="text" id="identifier" class="form-control" placeholder="you@example.com or username" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+            <button type="button" class="toggle-pw" onclick="togglePw('password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="remember">
+            <input type="checkbox" id="remember">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fas fa-crown"></i> Sign In
+        </button>
+
+      </form>
+
+      <div class="divider">Or continue with</div>
+
+      <div class="social-row">
+        <button class="social-btn" onclick="socialLogin('Google')">
+          <i class="fab fa-google"></i> Google
+        </button>
+        <button class="social-btn" onclick="socialLogin('Apple')">
+          <i class="fab fa-apple"></i> Apple
+        </button>
+        <button class="social-btn" onclick="socialLogin('Telegram')">
+          <i class="fab fa-telegram"></i> Telegram
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i> <span id="toastMsg">Welcome back!</span>
+</div>
+
+<script>
+  // STARFIELD
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [], w, h;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = [];
+    const count = Math.floor((w * h) / 9000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.4 + 0.3,
+        speed: Math.random() * 0.3 + 0.05,
+        alpha: Math.random() * 0.7 + 0.2,
+        pulse: Math.random() * Math.PI * 2
+      });
     }
-    
-    // Clear all session data
-    function clearAllSession() {
-        localStorage.removeItem('veloxtrades_token');
-        localStorage.removeItem('veloxtrades_user');
-        localStorage.removeItem('veloxtrades_remembered');
-        localStorage.removeItem('saved_username');
-        sessionStorage.removeItem('veloxtrades_token');
-        sessionStorage.removeItem('veloxtrades_user');
-        document.cookie = 'veloxtrades_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        document.cookie = 'elite_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        console.log('✅ All session data cleared');
-    }
-    
-    // Get URL parameters
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-    
-    // Check if coming from logout or registration
-    function checkUrlParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        // Check for logout success
-        if (urlParams.get('logout') === 'success') {
-            showMessage('You have been logged out successfully', 'success');
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
-            return true;
-        }
-        
-        // Check for registration success
-        if (urlParams.get('registered') === 'true') {
-            showAlert('Registration successful! Please login with your credentials.', 'success');
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
-            return true;
-        }
-        
-        return false;
-    }
-    
-    // Check for referral code in URL
-    function checkReferralCode() {
-        const refCode = getUrlParameter('ref');
-        if (refCode && refCode.trim()) {
-            referralCodeFromUrl = refCode.toUpperCase();
-            console.log('🔗 Referral code found in URL:', referralCodeFromUrl);
-            
-            // Show referral badge
-            const badge = document.getElementById('referralBadge');
-            const badgeMessage = document.getElementById('referralMessage');
-            badgeMessage.innerHTML = `<i class="fas fa-gift"></i> You were referred by code: ${referralCodeFromUrl}! Get bonus on signup!`;
-            badge.style.display = 'inline-flex';
-            
-            // Update register link with referral code
-            const registerLink = document.getElementById('registerLink');
-            if (registerLink) {
-                registerLink.href = `register.html?ref=${referralCodeFromUrl}`;
-            }
-            
-            // Store referral code in session to use on registration
-            sessionStorage.setItem('pending_referral_code', referralCodeFromUrl);
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                badge.style.display = 'none';
-            }, 8000);
-        }
-        
-        // Check for referral code in session (from previous visit)
-        const storedRefCode = sessionStorage.getItem('pending_referral_code');
-        if (storedRefCode && !referralCodeFromUrl) {
-            referralCodeFromUrl = storedRefCode;
-            const registerLink = document.getElementById('registerLink');
-            if (registerLink) {
-                registerLink.href = `register.html?ref=${storedRefCode}`;
-            }
-        }
-    }
-    
-    function showAlert(message, type = 'info') {
-        const alertBanner = document.getElementById('alertBanner');
-        const alertMessage = document.getElementById('alertMessage');
-        
-        // Check if message contains HTML (like a link)
-        if (message.includes('<a')) {
-            alertMessage.innerHTML = message;
-        } else {
-            alertMessage.textContent = message;
-        }
-        
-        alertBanner.style.display = 'block';
-        
-        if (type === 'success') {
-            alertBanner.style.background = '#d1fae5';
-            alertBanner.style.borderLeftColor = '#10b981';
-            alertBanner.querySelector('i').style.color = '#10b981';
-        } else if (type === 'error') {
-            alertBanner.style.background = '#fee2e2';
-            alertBanner.style.borderLeftColor = '#ef4444';
-            alertBanner.querySelector('i').style.color = '#ef4444';
-        } else {
-            alertBanner.style.background = '#fef3c7';
-            alertBanner.style.borderLeftColor = '#f59e0b';
-            alertBanner.querySelector('i').style.color = '#f59e0b';
-        }
-        
-        setTimeout(() => {
-            alertBanner.style.display = 'none';
-        }, 5000);
-    }
-    
-    function showMessage(text, type = 'error') {
-        const messageDiv = document.getElementById('message');
-        messageDiv.className = `message ${type}`;
-        const icons = {
-            success: 'fa-check-circle',
-            error: 'fa-exclamation-circle',
-            info: 'fa-info-circle',
-            warning: 'fa-exclamation-triangle'
-        };
-        messageDiv.innerHTML = `<i class="fas ${icons[type] || 'fa-info-circle'}"></i> ${text}`;
-        messageDiv.style.display = 'block';
-        
-        if (type === 'success') {
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 3000);
-        }
-    }
-    
-    function setLoading(isLoading) {
-        const loginBtn = document.getElementById('loginBtn');
-        loginBtn.disabled = isLoading;
-        if (isLoading) {
-            loginBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
-        } else {
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-        }
-    }
-    
-    async function handleLogin(e) {
-        e.preventDefault();
-        
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const rememberMe = document.getElementById('rememberMe').checked;
-        
-        if (!username || !password) {
-            showMessage('Please enter both username and password', 'error');
-            return;
-        }
-        
-        setLoading(true);
-        showMessage('Authenticating...', 'info');
-        
-        try {
-            // Use fetch with proper CORS headers
-            const response = await fetch(`${API_BASE_URL}/api/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Origin': window.location.origin
-                },
-                credentials: 'include',
-                mode: 'cors',
-                body: JSON.stringify({ username, password })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `HTTP ${response.status}: Login failed`);
-            }
-            
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error(data.message || 'Login failed');
-            }
-            
-            let token = null;
-            let user = null;
-            
-            if (data.data?.token) {
-                token = data.data.token;
-                user = data.data.user;
-            } else if (data.token) {
-                token = data.token;
-                user = data.user;
-            }
-            
-            if (!token || !user) {
-                throw new Error('Invalid response from server - missing token or user data');
-            }
-            
-            // Store token based on remember me preference
-            if (rememberMe) {
-                localStorage.setItem('veloxtrades_token', token);
-                localStorage.setItem('saved_username', username);
-                sessionStorage.removeItem('veloxtrades_token');
-            } else {
-                sessionStorage.setItem('veloxtrades_token', token);
-                localStorage.removeItem('veloxtrades_token');
-                localStorage.removeItem('saved_username');
-            }
-            
-            // Store user info in both storages for redundancy
-            const userData = {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                full_name: user.full_name,
-                balance: user.balance,
-                is_admin: user.is_admin === true,
-                kyc_status: user.kyc_status
-            };
-            
-            localStorage.setItem('veloxtrades_user', JSON.stringify(userData));
-            sessionStorage.setItem('veloxtrades_user', JSON.stringify(userData));
-            
-            // Set cookie for additional persistence
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (rememberMe ? 30 : 1) * 24 * 60 * 60 * 1000);
-            document.cookie = `veloxtrades_token=${token}; path=/; expires=${expires.toUTCString()}; SameSite=Lax; Secure`;
-            
-            // Clear pending referral code if exists
-            sessionStorage.removeItem('pending_referral_code');
-            sessionStorage.removeItem('just_logged_out');
-            
-            const isAdmin = user.is_admin === true;
-            const redirectPage = isAdmin ? 'admin-dashboard.html' : 'dashboard.html';
-            
-            showMessage(`✅ Welcome back, ${user.full_name || user.username}! Redirecting to ${isAdmin ? 'Admin Dashboard' : 'Dashboard'}...`, 'success');
-            
-            setTimeout(() => {
-                window.location.href = redirectPage;
-            }, 1500);
-            
-        } catch (error) {
-            console.error('Login error:', error);
-            let errorMessage = error.message || 'Login failed. Please check your credentials.';
-            
-            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                errorMessage = 'Network error. Please check your internet connection and try again.';
-            } else if (error.message.includes('CORS')) {
-                errorMessage = 'CORS error. Please contact support.';
-            }
-            
-            showMessage(errorMessage, 'error');
-            setLoading(false);
-            
-            // Clear password field for security
-            document.getElementById('password').value = '';
-            document.getElementById('password').focus();
-        }
-    }
-    
-    function clearSession() {
-        if (confirm('⚠️ Clear all saved session data? You will be logged out.')) {
-            clearAllSession();
-            sessionStorage.setItem('just_logged_out', 'true');
-            sessionStorage.removeItem('pending_referral_code');
-            showMessage('Session cleared! You can now login again.', 'success');
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('rememberMe').checked = false;
-            
-            setTimeout(() => {
-                const messageDiv = document.getElementById('message');
-                messageDiv.style.display = 'none';
-            }, 2000);
-        }
-    }
-    
-    // Load saved username
-    function loadSavedUsername() {
-        const savedUsername = localStorage.getItem('saved_username');
-        if (savedUsername) {
-            document.getElementById('username').value = savedUsername;
-            document.getElementById('rememberMe').checked = true;
-        }
-    }
-    
-    // Check if user is already logged in
-    async function checkExistingSession() {
-        const token = getToken();
-        if (!token) return false;
-        
-        // Check if we have a logout flag
-        const justLoggedOut = sessionStorage.getItem('just_logged_out');
-        if (justLoggedOut === 'true') {
-            sessionStorage.removeItem('just_logged_out');
-            return false;
-        }
-        
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/verify-token`, {
-                method: 'GET',
-                headers: { 
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-            });
-            
-            const data = await response.json();
-            
-            if (data.success && data.user) {
-                const isAdmin = data.user.is_admin === true;
-                const redirectPage = isAdmin ? 'admin-dashboard.html' : 'dashboard.html';
-                
-                // Show banner instead of auto-redirecting
-                showAlert(`✅ You are already logged in as <strong>${data.user.username}</strong>. <a href="${redirectPage}" style="color: #10b981; font-weight: bold; text-decoration: underline;">Click here to go to Dashboard</a>`, 'success');
-                return true;
-            } else {
-                // Token invalid, clear it
-                clearAllSession();
-                return false;
-            }
-        } catch (error) {
-            console.log('Token verification failed:', error);
-            clearAllSession();
-            return false;
-        }
-    }
-    
-    // Initialize
-    document.addEventListener('DOMContentLoaded', async function() {
-        console.log('📄 Login page loaded - Version 3.2.0 with Referral Support');
-        console.log('🔗 API URL:', API_BASE_URL);
-        
-        // Check URL parameters for messages
-        checkUrlParams();
-        
-        // Check for referral code in URL
-        checkReferralCode();
-        
-        // Check for existing session but don't auto-redirect
-        await checkExistingSession();
-        
-        // Load saved username
-        loadSavedUsername();
-        
-        // Set up event listeners
-        const loginForm = document.getElementById('loginForm');
-        const clearSessionBtn = document.getElementById('clearSessionBtn');
-        const passwordInput = document.getElementById('password');
-        
-        loginForm.addEventListener('submit', handleLogin);
-        clearSessionBtn.addEventListener('click', clearSession);
-        
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const loginBtn = document.getElementById('loginBtn');
-                if (!loginBtn.disabled) {
-                    loginForm.dispatchEvent(new Event('submit'));
-                }
-            }
-        });
-        
-        // Focus on username field
-        if (!document.getElementById('username').value) {
-            document.getElementById('username').focus();
-        } else {
-            document.getElementById('password').focus();
-        }
-        
-        // Log referral code if present
-        if (referralCodeFromUrl) {
-            console.log('🎁 Referral tracking active. Code:', referralCodeFromUrl);
-        }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const gradient = ctx.createRadialGradient(w/2, h/3, 0, w/2, h/3, w/1.2);
+    gradient.addColorStop(0, 'rgba(212,175,55,0.04)');
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, w, h);
+
+    stars.forEach(s => {
+      s.pulse += 0.02;
+      const twinkle = 0.6 + Math.sin(s.pulse) * 0.4;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.alpha * twinkle})`;
+      ctx.fill();
+      s.y += s.speed;
+      if (s.y > h) s.y = 0;
     });
-    </script>
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+
+  // TOGGLE PASSWORD
+  function togglePw(id, btn) {
+    const input = document.getElementById(id);
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.className = 'fas fa-eye-slash';
+    } else {
+      input.type = 'password';
+      icon.className = 'fas fa-eye';
+    }
+  }
+
+  // SUBMIT
+  function submitForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const identifier = document.getElementById('identifier').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!identifier || !password) {
+      showToast('Please fill in all fields', 'error');
+      return;
+    }
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+    btn.disabled = true;
+
+    // Simulate API call
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-check"></i> Signed In!';
+      showToast('Welcome back! Redirecting...', 'success');
+
+      // ⚠️ REPLACE THIS — hook up to your backend here
+      // fetch('https://your-backend.onrender.com/api/login', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   credentials: 'include',
+      //   body: JSON.stringify({ identifier, password })
+      // })
+      //   .then(r => r.json())
+      //   .then(data => {
+      //     if (data.success) window.location.href = '/dashboard.html';
+      //     else showToast(data.message || 'Invalid credentials', 'error');
+      //   })
+      //   .catch(() => showToast('Connection error', 'error'));
+
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1800);
+    }, 1200);
+  }
+
+  // SOCIAL LOGIN
+  function socialLogin(provider) {
+    showToast(`${provider} login coming soon!`, 'error');
+  }
+
+  // TOAST
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const icon = toast.querySelector('i');
+
+    toastMsg.textContent = msg;
+    toast.classList.remove('success', 'error');
+    toast.classList.add(type, 'show');
+    icon.className = type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3500);
+  }
+</script>
+
 </body>
 </html>
